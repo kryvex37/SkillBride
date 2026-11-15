@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const applicationController_js_1 = require("../controllers/applicationController.js");
+const auth_js_1 = require("../middleware/auth.js");
+const router = (0, express_1.Router)();
+router.post('/apply', auth_js_1.authenticateToken, (0, auth_js_1.requireRole)('student'), applicationController_js_1.ApplicationController.apply);
+router.get('/my-applications', auth_js_1.authenticateToken, (0, auth_js_1.requireRole)('student'), applicationController_js_1.ApplicationController.getStudentApplications);
+router.get('/project/:projectId', auth_js_1.authenticateToken, (0, auth_js_1.requireRole)('client', 'admin'), applicationController_js_1.ApplicationController.getProjectApplications);
+router.patch('/:id/status', auth_js_1.authenticateToken, applicationController_js_1.ApplicationController.updateStatus);
+exports.default = router;
